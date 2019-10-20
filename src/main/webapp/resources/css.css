@@ -1,0 +1,285 @@
+html {
+	scroll-behavior: smooth;
+	overflow:auto;
+}
+
+.sideNav {
+	overflow-x: auto;
+	height: 400px;
+	width:200px;
+	position: fixed;
+	z-index: 1;
+	top: 30%;
+	left: 0;
+	padding-top: 20px;
+	overflow:auto;
+}
+
+.sideNav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	color: #818181;
+	display: block;
+	overflow:auto;
+}
+
+.sideNav a:hover{
+	background-color: #e6e6e6;
+	color: black;
+	overflow:auto;
+}
+
+.sideNav a:active {
+	background-color: #blue;
+	color: white;
+	overflow:auto;
+}
+
+
+#header {
+	height: 300px;
+	background-color:white;
+	/*padding: 20px;*/
+	height:30vh;
+	position: relative;
+	overflow:auto;
+}
+
+#heading {
+	font-size: 38px;
+	font-family: "Arial";
+	overflow:auto;
+}
+
+h2 {
+	text-align: center;
+}
+
+#title {
+	padding-top: -20%;
+	overflow:auto;
+}
+
+.column {
+	border: 1px solid red;
+	width: 40%;
+	padding: 10px;
+	float: left;
+}
+
+.row:after {
+	padding: 10px;
+	content:"";
+	display: table;
+	clear: both;
+}
+
+topLeftTitle {
+	float: left;
+}
+
+#logoutID a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	color: #818181;
+	display: block;
+	overflow:auto;
+}
+
+#logoutID a:hover {
+	background-color: #e6e6e6;
+	color: black;
+	overflow:auto;
+}
+
+#logoutID a:active {
+	background-color: #blue;
+	color: white;
+	overflow:auto;
+}
+
+
+/*#home {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100%;
+	background-color:EEEEEE;
+}*/
+
+#markets {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 120vh;
+	width: 100%;
+	background-color:EEEEEE;
+	position: relative;
+	overflow:auto;
+}
+
+#marketTitle {
+	top: 180px;
+	left: 200px;
+	height:10%;
+	overflow:auto;
+}
+
+
+
+#stocks {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 120vh;
+	width: 100%;
+	background-color:white;
+	position: relative;
+	overflow:auto;
+	/*border: 1px solid red;*/
+}
+
+#stocksTitle {
+	top: 15px;
+	left: 170px;
+	position: absolute;
+	overflow:auto;
+}
+
+#stocksContent {
+	font-family: "Arial";
+	font-size: 20px;
+	width: 600px;
+	left: 170px;
+	/*position: absolute;*/
+	top: 95px;
+	overflow:auto;
+	/*border: 1px solid red;*/
+	padding:10px;
+}
+
+#bottomLeftContent {
+	font-family: "Arial";
+	font-size: 20px;
+	width: 600px;
+	left: 170px;
+	/*position: absolute;*/
+	top: 565px;
+	overflow:auto;
+	/*border: 1px solid red;*/
+	padding:10px;
+}
+
+#topRightContent {
+	font-family: "Arial";
+	font-size: 20px;
+	width: 600px;
+	left: 870px;
+	/*position: absolute;*/
+	top: 95px;
+	overflow:auto;
+	/*border: 1px solid red;*/
+	padding:10px;
+}
+
+#bottomRightContent {
+	font-family: "Arial";
+	font-size: 20px;
+	width: 600px;
+	left: 870px;
+	/*position: absolute;*/
+	top: 565px;
+	overflow:auto;
+	/*border: 1px solid red;*/
+	padding:10px;
+}
+
+#news {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 120vh;
+	width: 100%;
+	background-color:EEEEEE;
+	overflow:auto;
+}
+
+#newsTitle{
+	left: 200px;
+	overflow:auto;
+}
+
+#about {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100%;
+	background-color:white;
+	position: relative;
+	overflow:auto;
+}
+
+body {
+	padding:0;
+	background-color: #EEEEEE;
+	overflow:auto;
+}
+
+h1 {
+	color: #333;
+	text-align: center;
+}
+
+h3 {
+	color: #333;
+	text-align: center;
+}
+
+#test {
+	background-color:white;
+	font-size: 25px;
+	overflow: auto;
+	positon: relative;
+}
+
+#cell1 {
+	background-color:light-gray;
+	font-size: large;
+}
+
+table, th, td {
+	border: 1px solid gray;
+}
+
+#searchButton {
+	border: 1px solid red;
+}
+
+
+.marquee {
+    width: 100%;
+	line-height: 50px;
+	background-color: black;
+	color: Black;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+	top: 0px;
+}
+.marquee p {
+    display: inline-block;
+    padding-left: 1px;
+    animation: marquee 70s linear infinite;
+	/*border: 1px solid green;*/
+	color: white;
+	font-size: 30px;
+}
+@keyframes marquee {
+    0%   { transform: translate(30%, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+

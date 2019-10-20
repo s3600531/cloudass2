@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cloudass2-pands",
+  "private_key_id": "e2a438b9c394d00dfc842ac7e9eea94da538297f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyJbL7JFacyUtC\nDN0fdXf8/jXoh//KL40FdOVshqJgnJpsyOzKMkUXRVRrWcnfejRra2LyslHKTqgp\nkgXWg28+WxEFiNhnZlHmSzLsQzIMi152nVs1RVltiom7CebQolKIiWEtdsslVBMg\ngPxb6zve/lNdjGg1TJS1Nborjey2IOOz1c05iLlR2zu2+2RZ4cwSLnFp4SRPoluy\njZANKkPKg0KEXVzlx8NsKVndF3l2GQgtUfWqkMjkUIV002wdNzZl2KE85IX8iuF3\n8R3KHh70rxsY6XGzVzh51dhJeXU7E2dHIpOB2v1wgTHmn7nSNSkk/kU2Sg5CSqEw\n5axpgDZ1AgMBAAECggEADrNNsaut+gIiU7D8DjyDSj0v9aBDW0vRN0IOLIZvn8lM\ndO2fnI/JY8I01SbzoZ1T9glGgQB1/1u+RK/oC2uNInghT3ObZ+zplTdfXF+vIZne\nkasqe5rdZkyoUObgRRcf+GRdwIKtAMePTH9YU711k1EpT+7mKn/HRazJUA7GGcE5\nx0FuXeLUh8m9AXPaK6jpAWLwBgB2vrZfO8ECyzdWiFQsTkkF09YYBr/W1aGHP4hv\nK13/3pOhCJvvrmhFkdyLUhJTx/7msX/PGC1bbEnZs5V90o/0+q9swSxVIRjdRuK8\nqc6cwdJf7XlISOyjsl9E0tVetA318YqREA3oAbOdgQKBgQDbK3S8NFEVwsBUQm4a\n6tuaeuiaX8SJEv9QQ37oW+I6z2gIf2Ur/bZGh1NoQUonRgMiekf6xrUMhcU0g5wO\nbN63KwErhNlXNISpsh6+EagUrI8DYW3SSAzpbLuAd/IH2Gh4WTEPbmsl5XEmBpF0\ni5Tfn3ul/AcmHafdiToZFNtCFwKBgQDQFXtPKMIgyL/KJPwS7JsuEuukoM+Bhj2m\nmXW6zlcZqMz+03yKbZArPpfznzFx8sBfddLqY7FXDmdTe3F/SsEmrhPGRYzCdGci\n8esyk9s/a8LdxfqCIl8p6RM6ZtTCOcSETNd0JmmzMgLl5qOjPWWghcj8sthl5P2H\nUWA2MH8fUwKBgQCkUxuuNIeLCj7LrhcBpY9LbtXRUPZ5U74Lft+69ZFUSMeWf3Xq\nmso8bSAzLaicc5jME+S9+JgsMGvgaMDr6+K8cMjqyStvf9frp7n3BiQAhDSh8z21\nCQJtTXHz63qTOUVy3mSzTjWV70Z7nTcXq8POOrQpiiIOCPQgXNArmACgtwKBgGrI\nm18kK3tnigTStgmAIqKiUwtI+zQdD8ZPOnuDKG+ikJC1N1RSpYmLta7wIw+248IZ\nVQOz5W4nlh7hWn1Yf4a6DqvRRUsFMWhdfbWW6wzA4F+vGb9upCd91MBDxStnOdIr\nHOYeUGAFajdRBOjguSaHgX0syqB/wxuORzGH8bTBAoGBAMGCS0+18SWBwnDWJcHM\nfCg5I2PArwqt31+UcV9ahAHZEaHC0ujFsmnPP3cf/evMd2Fwyk/bCVlS+abqBUXu\nTYS0dbVufr3ftQ8F7g0ATHFQ7soPZ5AejcvJn0Q5t+UBMM13xWdjjVi/hiKWHwSB\nYhA5b3QRN2YXD0GY85dTmQBn\n-----END PRIVATE KEY-----\n",
+  "client_email": "userdata@cloudass2-pands.iam.gserviceaccount.com",
+  "client_id": "117463609454068005995",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/userdata%40cloudass2-pands.iam.gserviceaccount.com"
+}

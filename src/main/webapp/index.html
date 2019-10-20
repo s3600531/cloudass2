@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>P and S Stock Manager</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="resources/css.css">
+		<link rel="stylesheet" href="https://cdnjs.buttflare.com/ajax/libs/highcharts/5.0.6/css/highcharts.css" /-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://code.highcharts.com/stock/highstock.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script src="newsRealJS.js"></script>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<meta name="google-signin-client_id" content="168701824206-elq686530rmihcg5qerqvh2ldjaq45ag.apps.googleusercontent.com">
+		<script type="text/javascript">
+			$(document).ready(function() {			
+				$('#button').click(function() {
+					var formData = $('#fieldsForm').serialize();
+					
+					var callback = function(photoId) {
+						var redir = $('#success_action_redirect').val() + photoId;
+						$('#success_action_redirect').val(redir)
+						$('#dataUpload').submit();
+					};
+									
+					$.post("gstorage", formData, callback);
+				});
+			});
+		</script>
+		
+		<script>
+
+		const signedUrl = getSignedUrlFromBackend();
+
+		// this can be a file from e.g. <input type="file"/>
+		const topLeftInput = getFileToUpload();
+
+		const xhr = new XMLHttpRequest();
+		xhr.open("PUT", signedUrl, true);
+		xhr.onload = () => {
+		  const status = xhr.status;
+		  if (status === 200) {
+		    alert("File is uploaded");
+		  } else {
+		    alert("Something went wrong!");
+		  }
+		};
+
+		xhr.onerror = () => {
+		  alert("Something went wrong");
+		};
+		xhr.setRequestHeader('Content-Type', file.type);
+		xhr.send(file);
+		</script>
+	</head>
+
+	<body>
+			
+	<script>
+		function chartOne(tickerIn, containerID){
+		
+		var jsonData;
+			
+			var ticker = tickerIn;
+			
+			var container = containerID;
+			
+			var chartID = ticker.concat("-ohlc");
+			var chartVolumeID = ticker.concat("-volume");
+			var chartName = ticker.concat(" Stock Price");
+			var chartVolumeName = ticker.concat(" Volume");
+		
+			var urlsFront = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";
+			var tickerURL = tickerIn;
+			var urlsEnd = "&apikey=P64Z0RB29QRO4ODO";
+			
+			console.log(urlsFront);
+			var concatURL = urlsFront.concat(tickerURL, urlsEnd);
+			
+			console.log(concatURL);
+			
+			
+				$(function () {
+				var urls = concatURL;
+				$.ajax({
+				url: urls,        
+				dataType: 'json',
+				contentType: "application/json",
+				success: function (data) {
+					console.log(data['Time Series (Daily)']);
+				jsonData = data;
+
+				var ohlc = [],
+					volume = [],
+					dataLength = data.length,
+					i = 0;
+
+				var ohlc = [],
+					  volume = [],
+					  dataLength = data['Time Series (Daily)'],
+					  i = 0;
+					  for(var time in dataLength)
+					  {
+						var stock_info = dataLength[time];  
+						ohlc.push([        
+						  time,           
+						  Number(stock_info["1. open"]),
+						  Number(stock_info["2. high"]),
+						  Number(stock_info["3. low"]),
+						  Number(stock_info["4. close"])
+
+						]);
+
+						volume.push([
+							time,              
+							Number(stock_info["5. volume"])
+						]);
+					}
+
+			Highcharts.stockChart(container, {
+				yAxis: [{
+					labels: {
+						align: 'left'
+					},
+					height: '80%',
+					resize: {
+						enabled: true
+					}
+				}, {
+					labels: {
+						align: 'left'
+					},
+					top: '80%',
+					height: '20%',
+					offset: 0
+				}],
+				xAxis: {
+					reversed: true
+				},
+				tooltip: {
+					shape: 'square',
+					headerShape: 'callout',
+					borderWidth: 0,
+					shadow: false,
+					positioner: function (width, height, point) {
+						var chart = this.chart,
+							position;
+
+						if (point.isHeader) {
+							position = {
+								x: Math.max(
+									
+									chart.plotLeft,
+									Math.min(
+										point.plotX + chart.plotLeft - width / 2,
+										
+										chart.chartWidth - width - chart.marginRight
+									)
+								),
+								y: point.plotY
+							};
+						} else {
+							position = {
+								x: point.series.chart.plotLeft,
+								y: point.series.yAxis.top - chart.plotTop
+							};
+						}
+
+						return position;
+					}
+				},
+				series: [{
+					type: 'ohlc',
+					id: chartID,
+					name: chartName,
+					data: ohlc
+				}, {
+					type: 'column',
+					id: chartVolumeID,
+					name: chartVolumeName,
+					data: volume,
+					yAxis: 1
+				}],
+				responsive: {
+					rules: [{
+						condition: {
+							maxWidth: 800
+						},
+						chartOptions: {
+							rangeSelector: {
+								inputEnabled: false
+							}
+						}
+					}]
+				}
+			});
+		}
+		});
+	});
+}
+		
+</script>	
+
+
+	<script type="text/javascript">
+			function onSignIn(googleUser) {			
+				  var profile = googleUser.getBasicProfile();
+				  var imagurl=profile.getImageUrl();
+				  var name=profile.getName();
+				  var email=profile.getEmail();
+					 document.getElementById("myImg").src = imagurl;
+				  document.getElementById("name").innerHTML = name;
+	
+				  document.getElementById("myP").style.visibility = "hidden";
+				  
+				  document.getElementById("status").innerHTML = 'Welcome '+name+'!<a href=index.jsp?email='+email+'&name='+name+'/>Continue with Google login</a></p>'
+			 }
+	</script>
+	
+	<script>
+	function myFunction() {
+		gapi.auth2.getAuthInstance().disconnect();
+	    location.href="index.jsp";
+	}
+	</script>
+	
+	<script>
+	function isLoggedIn(googleUser) {
+			  var profile = googleUser.getBasicProfile();
+			  var imagurl=profile.getImageUrl();
+			  var name=profile.getName();
+			  var email=profile.getEmail();
+			  //document.getElementById("myImg").src = imagurl;
+			  document.getElementById("name").innerHTML = '<h2>Welcome '+name+'</h2>';
+	
+			  document.getElementById("myP").style.visibility = "hidden";
+			document.getElementById("logoutID").innerHTML = '<a href="" onclick="myFunction()">Log Out</a>'
+	}
+	</script>
+							
+		
+			
+
+			
+
+			
+	<div class = "sideNav">
+		<a href="#header">Home</a>
+		<a href="#stocks">Stocks</a>
+		<a href="#news">News</a>
+		<a href="#markets">Markets</a>
+		<a href="" onclick="myFunction()" id="logoutID" class="logoutlink"></a>
+		<a href="/index.jsp" class="g-signin2" data-onsuccess="isLoggedIn" id="myP"></a>
+	</div>
+		
+	<!-- page content -->
+	
+	<div id="header">
+	<div class="marquee">
+		<p id="marqeeText"></p>
+	</div>
+	
+		<div id="heading">
+			<h1>P & S Stock Manager</h1>
+			<hr width="40%">
+		</div>
+		
+		<div id="heading">
+			<h1 id="name"></h1>   	
+			<hr width="40%">		
+		</div>
+	</div>
+
+	<script>
+	
+	function saveTopLeft(){
+		var tLI = document.getElementById('topLeftInput').value;
+		var tLID = document.getElementById('topLeftTitle');
+		tLID.innerText = tLI;
+		chartOne(tLI, 'container1');
+		console.log(tLI);
+	}
+	
+	function saveBottomLeft(){
+		var bLI = document.getElementById('bottomLeftInput').value;
+		var bLID = document.getElementById('bottomLeftTitle');
+		bLID.innerText = bLI;
+		chartOne(bLI, 'container2');
+		console.log(bLI);
+	}
+	
+	function saveTopRight(){
+		var tRI = document.getElementById('topRightInput').value;
+		var tRID = document.getElementById('topRightTitle');
+		tRID.innerText = tRI;
+		chartOne(tRI, 'container3');
+		console.log(tRI);
+	}
+	
+	function saveBottomRight(){
+		var bRI = document.getElementById('bottomRightInput').value;
+		var bRID = document.getElementById('bottomRightTitle');
+		bRID.innerText = bRI;
+		chartOne(bRI, 'container4');
+		console.log(bRI);
+	}
+	
+	</script>
+	
+	<script>
+	
+		$(document).ready(function() {
+		
+			chartOne("AMD", 'container1');
+			var tLID = document.getElementById('topLeftTitle');
+			tLID.innerText = "AMD";
+			
+			chartOne("GOOG", 'container2');
+			var bLID = document.getElementById('bottomLeftTitle');
+			bLID.innerText = "GOOG";
+			
+			chartOne("AAPL", 'container3');
+			var tRID = document.getElementById('topRightTitle');
+			tRID.innerText = "AAPL";
+			
+			chartOne("MSFT", 'container4');
+			var tRID = document.getElementById('bottomRightTitle');
+			tRID.innerText = "MSFT";
+		});
+	
+	</script>
+	
+	<div class = "main" id="stocks" min-height="800px">
+		<div id="stocksTitle">
+			<h1></h1>
+			
+		</div>
+		
+		<div id="row">
+			<div id="column">
+			
+			<!--  <form id="topLeftInput" onsubmit="return false;"> -->
+			<h5 id="topLeftTitle"></h5><input name="topLeftSave" type="text" id="topLeftInput"></input>
+			<button type="button" onclick="saveTopLeft()">Get</button>
+			<input type="hidden" value="topLeftIn()"/>
+			<div id="stocksContent">
+			<div id="container1" style="height: 400px; min-width: 150px"></div>			
+			</div>
+			<!--  </form> -->
+			
+			<!--  <form id="bottomLeftInput" onsubmit="return false;">-->
+			<h5 id="bottomLeftTitle"></h5><input name="bottomLeftSave" type="text" id="bottomLeftInput"></input>
+			<button type="button" onclick="saveBottomLeft()">Get</button>
+			<input type="hidden" value="botLeftIn()"/>
+			<div id="bottomLeftContent">
+			<div id="container2" style="height: 400px; min-width: 150px"></div>
+			</div>
+			<!-- </form> -->
+			
+			</div>
+		</div>
+		<div id="row">
+			<div id="column">
+			
+			<!--  <form id="topRightInput" onsubmit="return false;"> -->
+			<h5 id="topRightTitle"></h5><input name="topRightSave" type="text" id="topRightInput"></input>
+			<button type="button" onclick="saveTopRight()">Get</button>
+			<input type="hidden" value="topRightIn()"/>
+			<div id="topRightContent">
+			<div id="container3" style="height: 400px; min-width: 150px"></div>
+			</div>
+			<!--  </form> -->
+			
+			<!--   <form id="bottomRightInput" onsubmit="botRightIn()"> -->
+			<h5 id="bottomRightTitle"></h5><input name="bottomRightSave" type="text" id="bottomRightInput"></input>
+			<button type="button" onclick="saveBottomRight()">Get</button>
+			<div id="bottomRightContent">
+			<div id="container4" style="height: 400px; min-width: 150px"></div>
+			</div>
+			<!--  </form> -->
+			
+			</div>
+		</div>
+	
+	</div>
+	
+	
+	<script>
+		function topLeftIn(){
+			var topLIn = document.getElementById("topLeftInput").value;
+			alert(topLIn);
+		}
+		
+		function botLeftIn(){
+			var botLIn = document.getElementById("botLeftInput").value;
+			alert(botLIn);
+		}
+		
+		function topRightIn(){
+			var topRIn = document.getElementById("topRightInput").value;
+			alert(topRIn);
+		}
+		
+		function botRightIn(){
+			var botRIn = document.getElementById("botRightInput").value;
+			alert(botRIn);
+		}
+	
+	
+	</script>
+
+	
+	<script>
+		function preNewsFill(){
+			var tLI = document.getElementById('topLeftInput').value;
+			var tLID = document.getElementById('topLeftTitle');
+			tLID.innerText = tLI;
+			chartOne(tLI, 'container1');
+		}	
+	</script>
+	
+		
+	<script>
+				
+	function fillNews(){
+			var baseURL = "https://stocknewsapi.com/api/v1?tickers=";
+			var ticker = document.getElementById('getNewsSearch').value;
+			var endURL = "&items=10&token=tfo8ulplqmgg3z903hmvqikl0g0wvsgnbwwnktx4";
+					
+			var concat = baseURL.concat(ticker, endURL);
+			console.log(concat);
+					
+			$(function() {
+				$.ajax({
+					url: concat
+				}).then(function(json) {
+				
+				console.log("-------------");
+				console.log(json);
+	
+	
+	
+				var t1 = document.getElementById('ticker1');
+				var tt1 = document.getElementById('title1');
+				var d1 = document.getElementById('date1');
+
+				t1.innerText = json.data[0].tickers[0];
+				d1.innerText = json.data[0].date;
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[0].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[0].title;
+				tt1.appendChild(elLink);
+				
+				/*************************************************/
+				var t2 = document.getElementById('ticker2');
+				var tt2 = document.getElementById('title2');
+				var d2 = document.getElementById('date2');
+				
+				t2.innerText = json.data[1].tickers[0];
+				d2.innerText = json.data[1].date;
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[1].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[1].title;
+				tt2.appendChild(elLink);
+				
+				/*************************************************/
+				var t3 = document.getElementById('ticker3');
+				var tt3 = document.getElementById('title3');
+				var d3 = document.getElementById('date3');
+				
+				console.log("#############");
+				t3.innerText = json.data[2].tickers[0];
+				d3.innerText = json.data[2].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[2].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[2].title;
+				tt3.appendChild(elLink);
+				
+				/*************************************************/
+				var t4 = document.getElementById('ticker4');
+				var tt4 = document.getElementById('title4');
+				var d4 = document.getElementById('date4');
+				
+				console.log("#############");
+				t4.innerText = json.data[3].tickers[0];
+				d4.innerText = json.data[3].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[3].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[3].title;
+				tt4.appendChild(elLink);
+				
+				/*************************************************/
+				var t5 = document.getElementById('ticker5');
+				var tt5 = document.getElementById('title5');
+				var d5 = document.getElementById('date5');
+				
+				console.log("#############");
+				t5.innerText = json.data[4].tickers[0];
+				d5.innerText = json.data[4].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[4].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[4].title;
+				tt5.appendChild(elLink);
+				
+				/*************************************************/
+				var t6 = document.getElementById('ticker6');
+				var tt6 = document.getElementById('title6');
+				var d6 = document.getElementById('date6');
+				
+				console.log("#############");
+				t6.innerText = json.data[5].tickers[0];
+				d6.innerText = json.data[5].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[5].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[5].title;
+				tt6.appendChild(elLink);
+				
+				/*************************************************/
+				var t7 = document.getElementById('ticker7');
+				var tt7 = document.getElementById('title7');
+				var d7 = document.getElementById('date7');
+				
+				console.log("#############");
+				t7.innerText = json.data[6].tickers[0];
+				d7.innerText = json.data[6].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[6].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[6].title;
+				tt7.appendChild(elLink);
+				
+				/*************************************************/
+				var t8 = document.getElementById('ticker8');
+				var tt8 = document.getElementById('title8');
+				var d8 = document.getElementById('date8');
+				
+				console.log("#############");
+				t8.innerText = json.data[7].tickers[0];
+				d8.innerText = json.data[7].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[7].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[7].title;
+				tt8.appendChild(elLink);
+				
+				/*************************************************/
+				var t9 = document.getElementById('ticker9');
+				var tt9 = document.getElementById('title9');
+				var d9 = document.getElementById('date9');
+				
+				console.log("#############");
+				t9.innerText = json.data[8].tickers[0];
+				d9.innerText = json.data[8].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[8].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[8].title;
+				tt9.appendChild(elLink);
+				
+				/*************************************************/
+				var t10 = document.getElementById('ticker10');
+				var tt10 = document.getElementById('title10');
+				var d10 = document.getElementById('date10');
+				
+				console.log("#############");
+				t10.innerText = json.data[9].tickers[0];
+				d10.innerText = json.data[9].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[9].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[9].title;
+				tt10.appendChild(elLink);
+				
+				/*************************************************/
+				
+				});
+			});
+	}
+	</script>
+	
+		
+	<script>
+					
+			var baseURL = "https://stocknewsapi.com/api/v1?tickers=";
+			var ticker = "GOOG";
+			var endURL = "&items=10&token=tfo8ulplqmgg3z903hmvqikl0g0wvsgnbwwnktx4";
+					
+			var concat = baseURL.concat(ticker, endURL);
+			console.log(concat);
+					
+			$(document).ready(function() {
+				$.ajax({
+					url: concat
+				}).then(function(json) {
+				
+				console.log("-------------");
+				console.log(json);
+	
+	
+	
+	
+				var t1 = document.getElementById('ticker1');
+				var tt1 = document.getElementById('title1');
+				var d1 = document.getElementById('date1');
+
+				t1.innerText = json.data[0].tickers[0];
+				d1.innerText = json.data[0].date;
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[0].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[0].title;
+				tt1.appendChild(elLink);
+				
+				/*************************************************/
+				var t2 = document.getElementById('ticker2');
+				var tt2 = document.getElementById('title2');
+				var d2 = document.getElementById('date2');
+				
+				t2.innerText = json.data[1].tickers[0];
+				d2.innerText = json.data[1].date;
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[1].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[1].title;
+				tt2.appendChild(elLink);
+				
+				/*************************************************/
+				var t3 = document.getElementById('ticker3');
+				var tt3 = document.getElementById('title3');
+				var d3 = document.getElementById('date3');
+				
+				console.log("#############");
+				t3.innerText = json.data[2].tickers[0];
+
+				d3.innerText = json.data[2].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[2].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[2].title;
+				tt3.appendChild(elLink);
+				
+				/*************************************************/
+				var t4 = document.getElementById('ticker4');
+				var tt4 = document.getElementById('title4');
+				var d4 = document.getElementById('date4');
+				
+				console.log("#############");
+				t4.innerText = json.data[3].tickers[0];
+
+				d4.innerText = json.data[3].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[3].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[3].title;
+				tt4.appendChild(elLink);
+				
+				/*************************************************/
+				var t5 = document.getElementById('ticker5');
+				var tt5 = document.getElementById('title5');
+				var d5 = document.getElementById('date5');
+				
+				console.log("#############");
+				t5.innerText = json.data[4].tickers[0];
+
+				d5.innerText = json.data[4].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[4].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[4].title;
+				tt5.appendChild(elLink);
+				
+				/*************************************************/
+				var t6 = document.getElementById('ticker6');
+				var tt6 = document.getElementById('title6');
+				var d6 = document.getElementById('date6');
+				
+				console.log("#############");
+				t6.innerText = json.data[5].tickers[0];
+
+				d6.innerText = json.data[5].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[5].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[5].title;
+				tt6.appendChild(elLink);
+				
+				/*************************************************/
+				var t7 = document.getElementById('ticker7');
+				var tt7 = document.getElementById('title7');
+				var d7 = document.getElementById('date7');
+				
+				console.log("#############");
+				t7.innerText = json.data[6].tickers[0];
+
+				d7.innerText = json.data[6].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[6].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[6].title;
+				tt7.appendChild(elLink);
+				
+				/*************************************************/
+				var t8 = document.getElementById('ticker8');
+				var tt8 = document.getElementById('title8');
+				var d8 = document.getElementById('date8');
+				
+				console.log("#############");
+				t8.innerText = json.data[7].tickers[0];
+
+				d8.innerText = json.data[7].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[7].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[7].title;
+				tt8.appendChild(elLink);
+				
+				/*************************************************/
+				var t9 = document.getElementById('ticker9');
+				var tt9 = document.getElementById('title9');
+				var d9 = document.getElementById('date9');
+				
+				console.log("#############");
+				t9.innerText = json.data[8].tickers[0];
+
+				d9.innerText = json.data[8].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[8].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[8].title;
+				tt9.appendChild(elLink);
+				
+				/*************************************************/
+				var t10 = document.getElementById('ticker10');
+				var tt10 = document.getElementById('title10');
+				var d10 = document.getElementById('date10');
+				
+				console.log("#############");
+				t10.innerText = json.data[9].tickers[0];
+				
+				d10.innerText = json.data[9].date;
+				console.log("#############");
+				 
+				var elLink = document.createElement('a');
+				var jsonURL = json.data[9].news_url;
+				elLink.href = jsonURL;
+				elLink.innerHTML = json.data[9].title;
+				tt10.appendChild(elLink);
+				
+				/*************************************************/				
+				});
+			});
+				
+	</script>
+	
+	
+	<div class="main" id="news">
+		
+		<table id="searchButton">
+
+		<tr><td><input name="getNews" type="text" id="getNewsSearch"></input><button type="button" onclick="fillNews()">Enter Ticker</button></td></tr>
+	
+		<tr><td>
+		<table id="test" width="100%">
+		
+			<tr id="titleRow">
+				<td width="10%">Ticker</td>
+				<td width="43%">Title</td>
+				<td width="33%">Date</td>
+			</tr>
+			
+			<tr id="row1">
+				<td id="ticker1"width="10%"></td>
+				<td id="title1" width="43%"></td>
+				<td id="date1" width="33%"></td>
+			</tr>
+			<tr id="row2">
+				<td id="ticker2"width="10%"></td>
+				<td id="title2" width="43%"></td>
+				<td id="date2" width="33%"></td>
+			</tr>
+			<tr id="row3">
+				<td id="ticker3"width="10%"></td>
+				<td id="title3" width="43%"></td>
+				<td id="date3" width="33%"></td>
+			</tr>
+			<tr id="row4">
+				<td id="ticker4"width="10%"></td>
+				<td id="title4" width="43%"></td>
+				<td id="date4" width="33%"></td>
+			</tr>
+			<tr id="row5">
+				<td id="ticker5"width="10%"></td>
+				<td id="title5" width="43%"></td>
+				<td id="date5" width="33%"></td>
+			</tr>
+			<tr id="row6">
+				<td id="ticker6"width="10%"></td>
+				<td id="title6" width="43%"></td>
+				<td id="date6" width="33%"></td>
+			</tr>
+			<tr id="row7">
+				<td id="ticker7"width="10%"></td>
+				<td id="title7" width="43%"></td>
+				<td id="date7" width="33%"></td>
+			</tr>
+			<tr id="row8">
+				<td id="ticker8"width="10%"></td>
+				<td id="title8" width="43%"></td>
+				<td id="date8" width="33%"></td>
+			</tr>
+			<tr id="row9">
+				<td id="ticker9"width="10%"></td>
+				<td id="title9" width="43%"></td>
+				<td id="date9" width="33%"></td>
+			</tr>
+			<tr id="row10">
+				<td id="ticker10"width="10%"></td>
+				<td id="title10" width="43%"></td>
+				<td id="date10" width="33%"></td>
+			</tr>
+
+		</table>
+		</td>
+		</tr>
+		</table>
+		
+	</div>
+	
+	<div class = "main" id="markets">
+		<div id="marketTitle">
+			<h1>Markets</h1>
+		</div>
+
+		<div id="row">
+			<div id="column">
+			<div id="stocksContent">
+			<div id="container1" style="height: 450px; min-width: 150px">
+			<div class="tradingview-widget-container">
+		  <div class="tradingview-widget-container__widget"></div>
+		  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/indices/" rel="noopener" target="_blank"></a></div>
+		  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+		  {
+		  "colorTheme": "light",
+		  "dateRange": "12m",
+		  "showChart": false,
+		  "locale": "en",
+		  "width": "100%",
+		  "height": "100%",
+		  "largeChartUrl": "",
+		  "isTransparent": false,
+		  "tabs": [
+			{
+			  "title": "Indices",
+			  "symbols": [
+				{
+				  "s": "OANDA:SPX500USD",
+				  "d": "S&P 500"
+				},
+				{
+				  "s": "OANDA:NAS100USD",
+				  "d": "Nasdaq 100"
+				},
+				{
+				  "s": "FOREXCOM:DJI",
+				  "d": "Dow 30"
+				},
+				{
+				  "s": "INDEX:NKY",
+				  "d": "Nikkei 225"
+				},
+				{
+				  "s": "INDEX:DEU30",
+				  "d": "DAX Index"
+				},
+				{
+				  "s": "OANDA:UK100GBP",
+				  "d": "FTSE 100"
+				}
+			  ],
+			  "originalTitle": "Indices"
+			}
+		  ]
+		}
+	 </script>
+		</div>
+		</div>
+			</div>
+			<div id="bottomLeftContent">
+			<div id="container2" style="height: 450px; min-width: 150px">
+			<div class="tradingview-widget-container">
+			  <div class="tradingview-widget-container__widget"></div>
+			  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/futures/" rel="noopener" target="_blank"><span class="blue-text"></a></div>
+			  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+			  {
+			  "colorTheme": "light",
+			  "dateRange": "12m",
+			  "showChart": false,
+			  "locale": "en",
+			  "width": "100%",
+			  "height": "100%",
+			  "largeChartUrl": "",
+			  "isTransparent": false,
+			  "tabs": [
+				{
+				  "title": "Commodities",
+				  "symbols": [
+					{
+					  "s": "CME_MINI:ES1!",
+					  "d": "E-Mini S&P"
+					},
+					{
+					  "s": "CME:6E1!",
+					  "d": "Euro"
+					},
+					{
+					  "s": "COMEX:GC1!",
+					  "d": "Gold"
+					},
+					{
+					  "s": "NYMEX:CL1!",
+					  "d": "Crude Oil"
+					},
+					{
+					  "s": "NYMEX:NG1!",
+					  "d": "Natural Gas"
+					},
+					{
+					  "s": "CBOT:ZC1!",
+					  "d": "Corn"
+					}
+				  ],
+				  "originalTitle": "Commodities"
+				}
+			  ]
+			}
+			  </script>
+			</div>
+			</div>
+			</div>
+			</div>
+		</div>
+		<div id="row">
+			<div id="column">
+			<div id="topRightContent">
+			<div id="container3" style="height: 450px; min-width: 150px">
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/futures/" rel="noopener" target="_blank"></a></div>
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+				  {
+				  "colorTheme": "light",
+				  "dateRange": "12m",
+				  "showChart": false,
+				  "locale": "en",
+				  "width": "100%",
+				  "height": "100%",
+				  "largeChartUrl": "",
+				  "isTransparent": false,
+				  "tabs": [
+					{
+					  "title": "Commodities",
+					  "symbols": [
+						{
+						  "s": "CME_MINI:ES1!",
+						  "d": "E-Mini S&P"
+						},
+						{
+						  "s": "CME:6E1!",
+						  "d": "Euro"
+						},
+						{
+						  "s": "COMEX:GC1!",
+						  "d": "Gold"
+						},
+						{
+						  "s": "NYMEX:CL1!",
+						  "d": "Crude Oil"
+						},
+						{
+						  "s": "NYMEX:NG1!",
+						  "d": "Natural Gas"
+						},
+						{
+						  "s": "CBOT:ZC1!",
+						  "d": "Corn"
+						}
+					  ],
+					  "originalTitle": "Commodities"
+					}
+				  ]
+				}
+				  </script>
+				</div>
+			</div>
+			</div>
+				<div id="bottomRightContent">
+				<div id="container4" style="height: 450px; min-width: 150px">
+
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/markets/currencies/" rel="noopener" target="_blank"><span class="blue-text"></a></div>
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+				  {
+				  "colorTheme": "light",
+				  "dateRange": "12m",
+				  "showChart": false,
+				  "locale": "en",
+				  "width": "100%",
+				  "height": "100%",
+				  "largeChartUrl": "",
+				  "isTransparent": false,
+				  "tabs": [
+					{
+					  "title": "Forex",
+					  "symbols": [
+						{
+						  "s": "FX:EURUSD"
+						},
+						{
+						  "s": "FX:GBPUSD"
+						},
+						{
+						  "s": "FX:USDJPY"
+						},
+						{
+						  "s": "FX:USDCHF"
+						},
+						{
+						  "s": "FX:AUDUSD"
+						},
+						{
+						  "s": "FX:USDCAD"
+						}
+					  ],
+					  "originalTitle": "Forex"
+					}
+				  ]
+				}
+				  </script>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>		
+	</body>
+	
+
+	
+</html>
